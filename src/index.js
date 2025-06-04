@@ -1,5 +1,6 @@
 import "./styles/style.css";
 import getWeather from "./utils/weatherReport";
+import getCurrentLocation from "./utils/geolocation";
 
 let weatherData = {};
 
@@ -13,6 +14,27 @@ form.addEventListener("submit", (e) => {
 
 submitBtn.addEventListener("click", async (e) => {
   const location = locationInput.value;
-  weatherData = await getWeather(location);
-  console.log(weatherData);
+  if (!location) return;
+  try {
+    weatherData = await getWeather(location);
+    console.log(weatherData);
+  } catch (error) {
+    alert(error.message);
+  }
 });
+
+async function initApp() {
+  try {
+    // To get the current location when the user enters the website
+    const location = await getCurrentLocation();
+
+    if (!weatherData) return;
+
+    weatherData = await getWeather(location);
+    console.log(weatherData);
+  } catch (error) {
+    console.warn(error.message);
+  }
+}
+
+initApp();

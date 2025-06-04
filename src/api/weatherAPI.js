@@ -9,12 +9,25 @@ export default async function getWeatherReport(location) {
     );
 
     if (!response.ok) {
-      throw new Error("Error fetching data..." + response.status);
+      switch (response.status) {
+        case 400:
+          throw new Error("Invalid address, try again with a valid one!");
+        case 401:
+          throw new Error("UNAUTHORIZED ACCESS");
+        case 404:
+          throw new Error("Resource not found");
+        case 429:
+          throw new Error(
+            "You have exceed the requests limit for this tier subscription"
+          );
+        case 500:
+          throw new Error("INTERNAL SERVER ERROR");
+      }
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log(error.message);
+    throw error;
   }
 }
