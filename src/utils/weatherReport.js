@@ -7,6 +7,7 @@ export default async function getWeather(location) {
     const weatherWeek = {
       alerts: data.alerts,
       address: data.resolvedAddress,
+      description: data.description,
     };
 
     let days = [];

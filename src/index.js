@@ -6,7 +6,7 @@ let weatherData = {};
 
 const locationInput = document.getElementById("location");
 const form = document.querySelector("form");
-const submitBtn = document.getElementById("searchBtn");
+const submitBtn = document.getElementById("search-btn");
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
