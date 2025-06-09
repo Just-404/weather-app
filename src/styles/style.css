@@ -60,9 +60,9 @@ body {
 body {
   display: grid;
   grid-template-columns: minmax(260px, 20%) 1fr;
-  grid-template-rows: min-content 1fr 250px 100px;
+  grid-template-rows: min-content minmax(400px, 1fr) 250px 100px;
   grid-template-areas:
-    "hours form"
+    "form form"
     "hours day-data"
     "hours days"
     "footer footer";
@@ -73,7 +73,7 @@ body {
 
 .hours-container {
   margin-left: 1rem;
-  height: 600px;
+  padding: 3px;
   grid-area: hours;
   display: grid;
   grid-template-rows: repeat(24, 45px);
@@ -132,9 +132,79 @@ body {
 
 #day-data {
   grid-area: day-data;
-  background-color: #ffffff;
-  margin-right: 1rem;
+  margin-right: 1.2rem;
+  display: grid;
+  grid-template-columns: 30% 1fr;
+  gap: 1rem;
 }
+
+#hour-overview,
+#day-overview {
+  padding: 1rem;
+  display: grid;
+  grid-template-rows: max-content 1fr;
+  gap: 1rem;
+  overflow-y: scroll;
+  background-color: #0163a9d8;
+}
+
+.header-title {
+  display: grid;
+  grid-template-columns: 1fr minmax(25px, 50px);
+  justify-items: left;
+  align-items: center;
+  column-gap: 10px;
+  color: white;
+}
+.header-title p {
+  font-size: 1.05rem;
+}
+
+.header-title div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+h2,
+.header-title h2 + p {
+  font-weight: 600;
+  font-size: 1.3rem;
+  word-break: normal;
+}
+
+.icon {
+  align-self: center;
+  height: 55px;
+  width: 60px;
+}
+
+.data-body-types {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 1rem;
+}
+
+#day-overview .data-body-types {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.conditions-types {
+  display: grid;
+  grid-template-rows: min-content 1fr;
+  align-items: center;
+  justify-items: center;
+  background-color: rgb(255, 255, 255);
+}
+.conditions-types p {
+  text-align: center;
+  word-spacing: 1ch;
+}
+
+#day-overview .conditions-types {
+  height: 120px;
+}
+
 .days-container {
   grid-area: days;
   margin-right: 1rem;
@@ -145,7 +215,8 @@ body {
 }
 
 .day-card {
-  height: 100px;
+  min-height: 100px;
+  max-height: 100%;
   background-color: rgb(44, 192, 215);
 }
 footer {
