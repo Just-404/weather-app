@@ -6,6 +6,12 @@ function createElement(name, selector, value) {
   return element;
 }
 
+function getDay(dateStr) {
+  const [year, month, day] = dateStr.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+  const days = ["Sun.", "Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat."];
+  return days[date.getDay()];
+}
 function createHourOverviewHeader(hourData) {
   const overviewHeader = createElement("div", "class", "header-title");
 
@@ -19,7 +25,7 @@ function createHourOverviewHeader(hourData) {
   hourP.textContent = "Hour: " + hourData.datetime;
 
   const temperatureP = createElement("p");
-  temperatureP.textContent = hourData.temperature;
+  temperatureP.textContent = hourData.temperature + "°";
 
   div.append(hourP, temperatureP);
   overviewHeader.append(conditionH2, weatherIcon, div);
@@ -42,11 +48,12 @@ function createDayOverviewHeader(dayData) {
 
   const div2 = createElement("div");
   const locationP = createElement("p");
-  locationP.textContent = dayData.address;
+  locationP.textContent = dayData.address || "Your location";
   const dateP = createElement("p");
-  dateP.textContent = dayData.datetime;
+
+  dateP.textContent = getDay(dayData.datetime) + " " + dayData.datetime;
   const feelsLikeP = createElement("p");
-  feelsLikeP.textContent = `${dayData.feelsLikeMax}° ${dayData.feelsLikeMin}° Feels like ${dayData.feelsLike}°`;
+  feelsLikeP.textContent = `${dayData.feelsLikeMax}° / ${dayData.feelsLikeMin}° Feels like ${dayData.feelsLike}°`;
 
   div2.append(locationP, dateP, feelsLikeP);
   overviewHeader.append(div, weatherIcon, div2);
@@ -105,10 +112,68 @@ function populateDayOverview(dayData) {
   dayOverview.append(overViewHeader, overViewBody);
 }
 
-export default function populateOverviews(weatherData) {
-  const hourData = weatherData.days[0].hours[0];
-  const dayData = weatherData.days[0];
+function populateHoursContainer(hours) {
+  const hoursContainer = document.querySelector("sidebar");
+  hoursContainer.innerHTML = "";
+  for (const hour of Object.values(hours)) {
+    const div = createElement("div", "class", "hour-card");
+    const conditionIcon = createElement("img", "class", "sidebar-icon");
+    const hourP = createElement("p");
+    hourP.textContent = hour.datetime.slice(0, 5);
 
-  populateHourOverview(hourData);
-  populateDayOverview(dayData);
+    const tempIcon = createElement("img", "class", "sidebar-icon");
+    const tempP = createElement("p");
+    tempP.textContent = hour.temperature;
+
+    const precipitationIcon = createElement("img", "class", "sidebar-icon");
+    const precipitP = createElement("p");
+    precipitP.textContent = hour.precipitationProb + "%";
+
+    div.append(
+      conditionIcon,
+      hourP,
+      tempIcon,
+      tempP,
+      precipitationIcon,
+      precipitP
+    );
+    hoursContainer.appendChild(div);
+  }
+}
+
+function populateDaysContainer(days) {
+  const daysContainer = document.querySelector("#days-container");
+  daysContainer.innerHTML = "";
+  for (const day of days) {
+    const div = createElement("div", "class", "day-card");
+    const conditionIcon = createElement("img", "class", "icon");
+    const dayP = createElement("p");
+    dayP.textContent = getDay(day.datetime);
+
+    const tempIcon = createElement("img", "class", "sidebar-icon");
+    const tempP = createElement("p");
+    tempP.textContent = day.temp;
+
+    const precipitationIcon = createElement("img", "class", "sidebar-icon");
+    const precipitP = createElement("p");
+    precipitP.textContent = day.precipitationProb + "%";
+
+    div.append(
+      conditionIcon,
+      dayP,
+      tempIcon,
+      tempP,
+      precipitationIcon,
+      precipitP
+    );
+    daysContainer.appendChild(div);
+  }
+}
+export default function populateOverviews(weatherData) {
+  const hourData = weatherData.days[0].hours;
+  const dayData = weatherData.days;
+  populateHourOverview(hourData[0]);
+  populateDayOverview(dayData[0]);
+  populateHoursContainer(hourData);
+  populateDaysContainer(dayData);
 }
