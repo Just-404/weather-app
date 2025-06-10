@@ -2,16 +2,23 @@ import "./styles/style.css";
 import getWeather from "./utils/weatherReport";
 import getCurrentLocation from "./utils/geolocation";
 import populateOverviews from "./utils/DOM";
+
 const loadingDialog = document.getElementById("loading");
+const recognitionDialog = document.getElementById("recognition-dialog");
+const infoBtn = document.querySelector("#info svg");
 
 const locationInput = document.getElementById("location");
 const form = document.querySelector("form");
 const submitBtn = document.getElementById("search-btn");
 const preventClosing = true;
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 });
 
+infoBtn.addEventListener("click", () => {
+  recognitionDialog.showModal();
+});
 loadingDialog.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && preventClosing) {
     e.preventDefault();

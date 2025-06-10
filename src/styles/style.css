@@ -62,7 +62,7 @@ body {
   grid-template-columns: minmax(260px, 20%) 1fr;
   grid-template-rows: min-content minmax(400px, 1fr) 250px 100px;
   grid-template-areas:
-    "form form"
+    "info form"
     "hours day-data"
     "hours days"
     "footer footer";
@@ -80,6 +80,58 @@ body {
   background: #a5a5a5;
   border-radius: 5px;
 }
+
+/* dialogs */
+
+dialog {
+  padding: 0;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid black;
+}
+
+dialog#loading {
+  padding: 2rem;
+  text-align: center;
+  font-size: 2rem;
+}
+dialog#recognition-dialog #dialog-content {
+  font-size: 1.3rem;
+  display: grid;
+  grid-template-rows: min-content 1fr 60px;
+
+  gap: 1rem;
+}
+dialog#recognition-dialog h3 {
+  padding: 1rem;
+}
+dialog#recognition-dialog ul {
+  padding: 0 2rem;
+}
+
+dialog#recognition-dialog form {
+  background-color: #585858;
+  display: flex;
+  padding: 1rem;
+  align-items: center;
+}
+dialog#recognition-dialog form button {
+  cursor: pointer;
+}
+#info {
+  grid-area: info;
+  margin-left: 1rem;
+}
+
+#info svg {
+  cursor: pointer;
+  width: 50px;
+  height: 40px;
+}
+
+/* End  dialogs */
 
 /* Hours container styles */
 
@@ -179,7 +231,11 @@ body {
   overflow-y: scroll;
   background-color: #0163a9d8;
 }
-
+#hour-overview .icon,
+#day-overview .icon {
+  width: 30px;
+  height: 30px;
+}
 .header-title {
   display: grid;
   grid-template-columns: 1fr minmax(25px, 50px);
@@ -207,7 +263,7 @@ h2,
 .header-title h2 + p {
   word-break: break-word;
 }
-.icon {
+.header-title .icon {
   align-self: center;
   height: 55px;
   width: 60px;
@@ -225,10 +281,11 @@ h2,
 
 .conditions-types {
   display: grid;
-  grid-template-rows: min-content 1fr;
+  grid-template-rows: 2fr 1fr;
   align-items: center;
   justify-items: center;
   background-color: rgb(255, 255, 255);
+  cursor: pointer;
 }
 .conditions-types p {
   text-align: center;
@@ -281,16 +338,4 @@ footer {
   justify-content: center;
   align-items: center;
   font-size: 1.3rem;
-}
-
-#loading {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 20%;
-  height: 18%;
-  text-align: center;
-  font-size: 2rem;
-  border: 1px solid black;
 }

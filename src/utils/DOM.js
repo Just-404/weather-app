@@ -1,3 +1,14 @@
+const iconFolder = require.context("../icons/", true, /\.png$/);
+
+function getIconPath(iconName) {
+  const iconFileName = `./${iconName}.png`;
+  if (iconFolder.keys().includes(iconFileName)) {
+    return iconFolder(iconFileName);
+  } else {
+    console.warn(`Icon not found: ${iconFileName}`);
+    return null;
+  }
+}
 function createElement(name, selector, value) {
   const element = document.createElement(name);
   if (selector && value !== undefined && value !== null) {
@@ -20,6 +31,7 @@ function createHourOverviewHeader(hourData) {
 
   const weatherIcon = createElement("img", "class", "icon");
   weatherIcon.alt = "weather icon";
+  weatherIcon.src = getIconPath("color/" + hourData.icon);
   const div = createElement("div");
   const hourP = createElement("p");
   hourP.textContent = "Hour: " + hourData.datetime;
@@ -46,6 +58,8 @@ function createDayOverviewHeader(dayData) {
   const weatherIcon = createElement("img", "class", "icon");
   weatherIcon.alt = "weather icon";
 
+  weatherIcon.src = getIconPath("color/" + dayData.icon);
+
   const div2 = createElement("div");
   const locationP = createElement("p");
   locationP.textContent = dayData.address || "Your location";
@@ -67,6 +81,8 @@ function createOverviewBody(conditions) {
     const img = createElement("img", "class", "icon");
     img.alt = key;
     img.title = key;
+    img.src = getIconPath(key);
+
     const p = createElement("p");
     p.textContent = value;
 
@@ -120,19 +136,25 @@ function populateHoursContainer(hours) {
   for (const hour of Object.values(hours)) {
     const div = createElement("div", "class", "hour-card");
     div.addEventListener("click", (e) => {
-      const currentHour = hour;
       populateHourOverview(hour);
     });
 
     const conditionIcon = createElement("img", "class", "sidebar-icon");
+    conditionIcon.title = hour.icon;
+    conditionIcon.src = getIconPath("color/" + hour.icon);
     const hourP = createElement("p");
     hourP.textContent = hour.datetime.slice(0, 5);
 
     const tempIcon = createElement("img", "class", "sidebar-icon");
+    tempIcon.src = getIconPath("temperature");
+    tempIcon.title = "temperature";
     const tempP = createElement("p");
     tempP.textContent = hour.temperature;
 
     const precipitationIcon = createElement("img", "class", "sidebar-icon");
+    precipitationIcon.src = getIconPath("precipitation");
+    precipitationIcon.title = "precipitation";
+
     const precipitP = createElement("p");
     precipitP.textContent = hour.precipitationProb + "%";
 
@@ -159,14 +181,20 @@ function populateDaysContainer(days, location) {
       populateDayOverview(day, location);
     });
     const conditionIcon = createElement("img", "class", "icon");
+    conditionIcon.title = day.icon;
+    conditionIcon.src = getIconPath("color/" + day.icon);
     const dayP = createElement("p");
     dayP.textContent = getDay(day.datetime);
 
     const tempIcon = createElement("img", "class", "sidebar-icon");
+    tempIcon.src = getIconPath("temperature");
+    tempIcon.title = "temperature";
+
     const tempP = createElement("p");
     tempP.textContent = day.temp;
 
     const precipitationIcon = createElement("img", "class", "sidebar-icon");
+    precipitationIcon.src = getIconPath("precipitation");
     const precipitP = createElement("p");
     precipitP.textContent = day.precipitationProb + "%";
 
