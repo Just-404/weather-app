@@ -94,9 +94,10 @@ function populateHourOverview(hourData) {
   hourOverview.append(overViewHeader, overViewBody);
 }
 
-function populateDayOverview(dayData) {
+function populateDayOverview(dayData, location) {
   const dayOverview = document.getElementById("day-overview");
   dayOverview.innerHTML = "";
+  dayData.address = location;
   const overViewHeader = createDayOverviewHeader(dayData);
   const conditionsCard = {
     temperature: ` ${dayData.maxTemp}°/${dayData.minTemp}° ${dayData.temp}°`,
@@ -147,7 +148,7 @@ function populateHoursContainer(hours) {
   }
 }
 
-function populateDaysContainer(days) {
+function populateDaysContainer(days, location) {
   const daysContainer = document.querySelector("#days-container");
   daysContainer.innerHTML = "";
   for (const day of days) {
@@ -155,7 +156,7 @@ function populateDaysContainer(days) {
     div.addEventListener("click", () => {
       populateHoursContainer(day.hours);
       populateHourOverview(day.hours[0]);
-      populateDayOverview(day);
+      populateDayOverview(day, location);
     });
     const conditionIcon = createElement("img", "class", "icon");
     const dayP = createElement("p");
@@ -186,7 +187,7 @@ export default function populateOverviews(weatherData) {
   const currentHour = new Date().getHours();
 
   populateHourOverview(hourData[currentHour]);
-  populateDayOverview(dayData[0]);
+  populateDayOverview(dayData[0], weatherData.address);
   populateHoursContainer(hourData);
-  populateDaysContainer(dayData);
+  populateDaysContainer(dayData, weatherData.address);
 }
