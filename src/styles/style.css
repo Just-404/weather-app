@@ -103,6 +103,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  &:hover {
+    background-color: rgba(0, 123, 123, 0.817);
+    cursor: pointer;
+  }
 }
 
 .sidebar-icon {
@@ -179,13 +183,11 @@ body {
 .header-title {
   display: grid;
   grid-template-columns: 1fr minmax(25px, 50px);
+  grid-template-rows: 50px 1fr;
   justify-items: left;
   align-items: center;
   column-gap: 10px;
   color: white;
-}
-.header-title p {
-  font-size: 1.05rem;
 }
 
 .header-title div {
@@ -193,14 +195,18 @@ body {
   align-items: center;
   gap: 1rem;
 }
+.header-title p {
+  font-size: 1.05rem;
+}
 
 h2,
 .header-title h2 + p {
   font-weight: 600;
   font-size: 1.3rem;
-  word-break: normal;
 }
-
+.header-title h2 + p {
+  word-break: break-word;
+}
 .icon {
   align-self: center;
   height: 55px;
@@ -230,7 +236,7 @@ h2,
 }
 
 #day-overview .conditions-types {
-  height: 120px;
+  height: 130px;
 }
 /* End main data container styles */
 
@@ -248,7 +254,7 @@ h2,
   padding: 10px;
   min-height: 100px;
   max-height: 100%;
-  background-color: rgb(44, 192, 215);
+  background-color: rgb(1, 199, 229);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -256,6 +262,11 @@ h2,
   gap: 10px;
 }
 
+.day-card:hover {
+  background-color: rgb(11, 96, 109);
+  color: #fff;
+  cursor: pointer;
+}
 .day-card .icon {
   height: 25px;
   width: 25px;

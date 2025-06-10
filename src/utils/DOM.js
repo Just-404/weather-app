@@ -115,8 +115,14 @@ function populateDayOverview(dayData) {
 function populateHoursContainer(hours) {
   const hoursContainer = document.querySelector("sidebar");
   hoursContainer.innerHTML = "";
+
   for (const hour of Object.values(hours)) {
     const div = createElement("div", "class", "hour-card");
+    div.addEventListener("click", (e) => {
+      const currentHour = hour;
+      populateHourOverview(hour);
+    });
+
     const conditionIcon = createElement("img", "class", "sidebar-icon");
     const hourP = createElement("p");
     hourP.textContent = hour.datetime.slice(0, 5);
@@ -146,6 +152,11 @@ function populateDaysContainer(days) {
   daysContainer.innerHTML = "";
   for (const day of days) {
     const div = createElement("div", "class", "day-card");
+    div.addEventListener("click", () => {
+      populateHoursContainer(day.hours);
+      populateHourOverview(day.hours[0]);
+      populateDayOverview(day);
+    });
     const conditionIcon = createElement("img", "class", "icon");
     const dayP = createElement("p");
     dayP.textContent = getDay(day.datetime);
@@ -172,7 +183,9 @@ function populateDaysContainer(days) {
 export default function populateOverviews(weatherData) {
   const hourData = weatherData.days[0].hours;
   const dayData = weatherData.days;
-  populateHourOverview(hourData[0]);
+  const currentHour = new Date().getHours();
+
+  populateHourOverview(hourData[currentHour]);
   populateDayOverview(dayData[0]);
   populateHoursContainer(hourData);
   populateDaysContainer(dayData);
